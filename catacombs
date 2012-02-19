@@ -15,8 +15,17 @@ def run():
         print "Serving HTTP on %s port %s ..." % httpd.socket.getsockname()
         httpd.serve_forever()
 
+def help():
+    print "Available commands:"
+    print "  run - launch the server"
+    print
+
 if __name__ == "__main__":
-    try:
-        run()
-    except KeyboardInterrupt:
-        print "end"
+    if len(sys.argv) == 1:
+        help()
+        sys.exit(0)
+    if sys.argv[1] == "run":
+        try:
+            run()
+        except KeyboardInterrupt:
+            print "end"
