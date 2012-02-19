@@ -21,6 +21,11 @@ def home(environ, start_response):
 def books(environ, start_response):
     return render(start_response, dumps(db.get_books()))
 
+def info_on_a_book(environ, start_response):
+    id = environ['selector.vars']['id']
+    return render(start_response, dumps(db.get_a_book(id)))
+
 urls = selector.Selector()
 urls.add('/', GET=home)
 urls.add('/books', GET=books)
+urls.add('/info/{id}', GET=info_on_a_book)

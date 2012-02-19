@@ -1,4 +1,5 @@
 import pymongo
+from pymongo.objectid import ObjectId
 
 def _format_book(book):
     book["_id"] = str(book["_id"])
@@ -11,3 +12,6 @@ def connect():
 
 def get_books():
     return map(_format_book, list(connect()['books'].find()))
+
+def get_a_book(id):
+    return _format_book(connect()['books'].find_one({"_id": ObjectId(id)}))
