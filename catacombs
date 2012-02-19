@@ -2,6 +2,8 @@
 
 import os
 import sys
+from os.path import abspath, curdir
+from db import add_a_book
 
 def run():
     import urls
@@ -18,8 +20,16 @@ def run():
 def help():
     print "Available commands:"
     print "  run  - launch the server"
+    print "  add  - add a list of ebooks to the db"
     print "  help - print this and exist"
     print
+
+def add(*args):
+    if not args:
+        print "give me at least one ebook name"
+        sys.exit(1)
+    for i in args:
+        add_a_book(abspath(curdir) + "/" + i, i)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -32,3 +42,5 @@ if __name__ == "__main__":
             print "end"
     elif sys.argv[1] == "help":
         help()
+    elif sys.argv[1] == "add":
+        add(*sys.argv[2:])

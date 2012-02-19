@@ -15,3 +15,11 @@ def get_books():
 
 def get_a_book(id):
     return _format_book(connect()['books'].find_one({"_id": ObjectId(id)}))
+
+def add_a_book(book_path, file_name):
+    return connect()["books"].insert(
+        {
+         "path": book_path,
+         "name": file_name,
+        }
+    )
