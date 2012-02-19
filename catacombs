@@ -27,7 +27,7 @@ def help():
     print "  help - print this and exist"
     print
 
-def add(*books):
+def add_book(*books):
     if not books:
         print "give me at least one ebook name"
         sys.exit(1)
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     elif sys.argv[1] == "help":
         help()
     elif sys.argv[1] == "add":
-        add(*sys.argv[2:])
+        add_book(*sys.argv[2:])
