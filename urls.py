@@ -10,25 +10,34 @@ extensions = {
     'atom': 'application/atom+xml'
 }
 
+def request(func):
+    def decorate(environ, start_response):
+        print start_response, func(environ)
+        return render(start_response, func(environ))
+    return decorate
+
 def render(start_response, text):
     # I think that the next 2 lines does nothing, was coming from the example, strange
     contenttype = "text/html"
     start_response("200 OK", [('Content-Type', contenttype)])
     return text
 
-def home(environ, start_response):
-    return render(start_response, dumps({"books": "/books", "peers": "/list"}))
+@request
+def home(environ):
+    return dumps({"books": "/books", "peers": "/list"})
 
-def books(environ, start_response):
-    return render(start_response, dumps(db.get_books()))
+@request
+def books(environ):
+    return dumps(db.get_books())
 
-def info_on_a_book(environ, start_response):
+@request
+def info_on_a_book(environ):
     id = environ['selector.vars']['id']
-    return render(start_response, dumps(db.get_a_book(id)))
+    return dumps(db.get_a_book(id))
 
-def about(environ, start_response):
-    print start_response
-    return render(start_response, dumps({"owner": os.environ["USER"]}))
+@request
+def about(environ):
+    return dumps({"owner": os.environ["USER"]})
 
 urls = selector.Selector()
 urls.add('/', GET=home)
