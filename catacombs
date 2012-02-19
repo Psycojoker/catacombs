@@ -3,7 +3,10 @@
 import os
 import sys
 from os.path import abspath, curdir
-from db import add_a_book
+from urllib import urlopen
+from os.path import exists
+
+import db
 
 def run():
     import urls
@@ -24,12 +27,17 @@ def help():
     print "  help - print this and exist"
     print
 
-def add(*args):
-    if not args:
+def add(*books):
+    if not books:
         print "give me at least one ebook name"
         sys.exit(1)
-    for i in args:
-        add_a_book(abspath(curdir) + "/" + i, i)
+    for book in books:
+        book_path = abspath(curdir) + "/" + book
+        if not exists(book_path):
+            print "Error: '%s' doesn't not exists" % book_path
+            return
+        db.add_a_book(book_path, book)
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
