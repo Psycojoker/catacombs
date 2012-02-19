@@ -16,7 +16,7 @@ def render(start_response, text):
     return text
 
 def home(environ, start_response):
-    return render(start_response, "hello world")
+    return render(start_response, dumps({"books": "/books", "peers": "/list"}))
 
 def books(environ, start_response):
     return render(start_response, dumps(db.get_books()))
