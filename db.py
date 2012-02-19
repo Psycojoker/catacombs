@@ -14,8 +14,11 @@ def connect():
 def get_books():
     return map(_format_book, list(connect()['books'].find()))
 
-def get_a_book(id):
-    return _format_book(connect()['books'].find_one({"_id": ObjectId(id)}))
+def get_a_book(id, remove_path=True):
+    if remove_path:
+        return _format_book(connect()['books'].find_one({"_id": ObjectId(id)}))
+    else:
+        return connect()['books'].find_one({"_id": ObjectId(id)})
 
 def add_a_book(book_path, file_name):
     return connect()["books"].insert(

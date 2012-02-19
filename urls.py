@@ -16,9 +16,8 @@ def request(func):
         return render(start_response, func(environ))
     return decorate
 
-def render(start_response, text):
+def render(start_response, text, contenttype="text/html"):
     # I think that the next 2 lines does nothing, was coming from the example, strange
-    contenttype = "text/html"
     start_response("200 OK", [('Content-Type', contenttype)])
     return text
 
@@ -39,8 +38,13 @@ def info_on_a_book(environ):
 def about(environ):
     return dumps({"owner": os.environ["USER"]})
 
+def get_on_a_book(environ, start_response):
+    id = environ['selector.vars']['id']
+    return render(start_response, open(db.get_a_book(id, remove_path=False)["path"], "r").read(), contenttype="application/pdf")
+
 urls = selector.Selector()
 urls.add('/', GET=home)
 urls.add('/books', GET=books)
 urls.add('/info/{id}', GET=info_on_a_book)
+urls.add('/get/{id}', GET=get_on_a_book)
 urls.add('/about', GET=about)
