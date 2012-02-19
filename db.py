@@ -1,5 +1,6 @@
 import pymongo
 from pymongo.objectid import ObjectId
+from os.path import exists
 
 def _format_book(book):
     book["_id"] = str(book["_id"])
@@ -21,6 +22,9 @@ def get_a_book(id, remove_path=True):
         return connect()['books'].find_one({"_id": ObjectId(id)})
 
 def add_a_book(book_path, file_name):
+    if not exists(book_path):
+        print "Error: '%s' doesn't not exists" % book_path
+        return
     return connect()["books"].insert(
         {
          "path": book_path,
