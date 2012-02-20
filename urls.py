@@ -24,7 +24,7 @@ def render(start_response, text, contenttype="text/html"):
 
 @request
 def home(environ):
-    return dumps({"books": "/books", "peers": "/list"})
+    return dumps({"books": "/books", "peers": "/list", "about": "/about"})
 
 @request
 def books(environ):
