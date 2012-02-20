@@ -53,7 +53,7 @@ if __name__ == "__main__":
     elif sys.argv[1] == "add":
         add_book(*sys.argv[2:])
     else:
-        print "Error: invalid command %s" % sys.argv[1]
+        print "Error: invalid command '%s'" % sys.argv[1]
         print
         help()
         sys.exit(1)

@@ -1,6 +1,5 @@
 import pymongo
 from pymongo.objectid import ObjectId
-from os.path import exists
 
 def _format_book(book):
     book["_id"] = str(book["_id"])
