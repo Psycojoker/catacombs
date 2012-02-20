@@ -5,6 +5,7 @@ import sys
 from os.path import abspath, curdir
 from urllib import urlopen
 from os.path import exists
+from json import loads
 
 import db
 
@@ -45,11 +46,11 @@ def add_peers(*peers):
         sys.exit(1)
     for peer in peers:
         try:
-            urlopen(peer)
+            name = loads(urlopen(peer + "/about").read())["owner"]
         except IOError:
             print "error, can't connect to %s" % peer
         else:
-            db.add_a_peer(peer)
+            db.add_a_peer(peer, name)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:

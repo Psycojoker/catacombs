@@ -28,9 +28,10 @@ def add_a_book(book_path, file_name):
         }
     )
 
-def add_a_peer(peer_url):
+def add_a_peer(peer_url, name):
     return connect()["peers"].insert(
         {
          "url": peer_url,
+         "name": name,
         }
     )
