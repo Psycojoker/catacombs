@@ -39,6 +39,9 @@ def info_on_a_book(environ):
 def about(environ):
     return dumps({"owner": "%s@%s" % (os.environ["USER"], socket.gethostname())})
 
+@request
+def list_peers(environ):
+    return dumps(db.get_peers())
 
 def get_on_a_book(environ, start_response):
     id = environ['selector.vars']['id']
@@ -47,6 +50,7 @@ def get_on_a_book(environ, start_response):
 urls = selector.Selector()
 urls.add('/', GET=home)
 urls.add('/books', GET=books)
+urls.add('/list', GET=list_peers)
 urls.add('/info/{id}', GET=info_on_a_book)
 urls.add('/get/{id}', GET=get_on_a_book)
 urls.add('/about', GET=about)

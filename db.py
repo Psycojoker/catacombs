@@ -1,6 +1,10 @@
 import pymongo
 from pymongo.objectid import ObjectId
 
+def _format_peer(peer):
+    peer["_id"] = str(peer["_id"])
+    return peer
+
 def _format_book(book):
     book["_id"] = str(book["_id"])
     book["info_url"] = "/info/%s" % book["_id"]
@@ -13,6 +17,9 @@ def connect():
 
 def get_books():
     return map(_format_book, list(connect()['books'].find()))
+
+def get_peers():
+    return map(_format_peer, list(connect()['peers'].find()))
 
 def get_a_book(id, remove_path=True):
     if remove_path:
