@@ -33,6 +33,10 @@ def add_a_book(book_path, file_name):
     in_db_book = connect()["books"].find_one({"hash": file_hash})
     if in_db_book is not None:
         print "Error: file '%s' is already in the db with path '%s'" % (book_path, in_db_book["path"])
+        if book_path != in_db_book["path"]:
+            print "Updating file path with new path"
+            in_db_book["path"] = book_path
+            connect()["books"].save(in_db_book)
         return None
     return connect()["books"].insert(
         {
