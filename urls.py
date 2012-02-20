@@ -4,6 +4,7 @@ import selector
 from json import dumps
 import db
 import os
+import socket
 
 extensions = {
     'html': 'text/html',
@@ -36,7 +37,8 @@ def info_on_a_book(environ):
 
 @request
 def about(environ):
-    return dumps({"owner": os.environ["USER"]})
+    return dumps({"owner": "%s@%s" % (os.environ["USER"], socket.gethostname())})
+
 
 def get_on_a_book(environ, start_response):
     id = environ['selector.vars']['id']
