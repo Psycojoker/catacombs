@@ -22,9 +22,10 @@ def run():
 
 def help():
     print "Available commands:"
-    print "  run  - launch the server"
-    print "  add  - add a list of ebooks to the db"
-    print "  help - print this and exist"
+    print "  run        - launch the server"
+    print "  add        - add a list of ebooks to the db"
+    print "  add-peers  - add a list of ebooks to the db"
+    print "  help       - print this and exist"
     print
 
 def add_book(*books):
@@ -38,6 +39,17 @@ def add_book(*books):
             return
         db.add_a_book(book_path, book)
 
+def add_peers(*peers):
+    if not peers:
+        print "give me at least one url to a peers"
+        sys.exit(1)
+    for peer in peers:
+        try:
+            urlopen(peer)
+        except IOError:
+            print "error, can't connect to %s" % peer
+        else:
+            db.add_a_peer(peer)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -52,6 +64,8 @@ if __name__ == "__main__":
         help()
     elif sys.argv[1] == "add":
         add_book(*sys.argv[2:])
+    elif sys.argv[1] == "add-peers":
+        add_peers(*sys.argv[2:])
     else:
         print "Error: invalid command '%s'" % sys.argv[1]
         print
