@@ -1,5 +1,6 @@
 import pymongo
 from pymongo.objectid import ObjectId
+from utils import md5Checksum
 
 def _format_peer(peer):
     peer["_id"] = str(peer["_id"])
@@ -28,10 +29,16 @@ def get_a_book(id, remove_path=True):
         return connect()['books'].find_one({"_id": ObjectId(id)})
 
 def add_a_book(book_path, file_name):
+    file_hash = md5Checksum(book_path)
+    in_db_book = connect()["books"].find_one({"hash": file_hash})
+    if in_db_book is not None:
+        print "Error: file '%s' is already in the db with path '%s'" % (book_path, in_db_book["path"])
+        return None
     return connect()["books"].insert(
         {
          "path": book_path,
          "name": file_name,
+         "hash": file_hash,
         }
     )
 
