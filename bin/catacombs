@@ -7,10 +7,15 @@ from urllib import urlopen
 from os.path import exists
 from json import loads
 
-import db
+try:
+    from catacombs import db
+    from catacombs import urls
+except ImportError:
+    sys.path.append("..")
+    from catacombs import db
+    from catacombs import urls
 
 def run():
-    import urls
     if os.environ.get("REQUEST_METHOD", ""):
         from wsgiref.handlers import BaseCGIHandler
         BaseCGIHandler(sys.stdin, sys.stdout, sys.stderr, os.environ).run(urls.urls)
