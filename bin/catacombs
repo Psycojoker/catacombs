@@ -39,7 +39,7 @@ def add_book(*books):
         print "give me at least one ebook name"
         sys.exit(1)
     for book in books:
-        book_path = abspath(curdir) + "/" + book
+        book_path = abspath(book)
         if not exists(book_path):
             print "Error: '%s' doesn't not exists" % book_path
             return
