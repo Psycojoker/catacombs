@@ -17,9 +17,9 @@ def request(func):
         return render(start_response, func(environ))
     return decorate
 
-def render(start_response, text, contenttype="text/html"):
+def render(start_response, text, headers=[('Content-Type', "text/html")]):
     # I think that the next 2 lines does nothing, was coming from the example, strange
-    start_response("200 OK", [('Content-Type', contenttype)])
+    start_response("200 OK", headers)
     return text
 
 @request
