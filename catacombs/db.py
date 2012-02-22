@@ -47,7 +47,7 @@ def add_a_book(book_path, file_name):
     )
 
 def add_a_peer(peer_url, name):
-    if connect()["peers"].find_one({"url": "http://192.168.1.2:8080"}) is not None:
+    if connect()["peers"].find_one({"url": peer_url}) is not None:
         print "error: peer with url '%s' already exists" % peer_url
         return None
     return connect()["peers"].insert(
