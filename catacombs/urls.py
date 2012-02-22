@@ -45,12 +45,14 @@ def list_peers(environ):
 
 def get_on_a_book(environ, start_response):
     id = environ['selector.vars']['id']
-    return render(start_response, open(db.get_a_book(id, remove_path=False)["path"], "r").read(), contenttype="application/pdf")
+    book = db.get_a_book(id, remove_path=False)
+    content = open(book["path"], "r").read() if environ['REQUEST_METHOD'] == 'GET' else ""
+    return render(start_response, content, [('Content-Type', 'application/pdf'), ('Content-Disposition', 'attachment; filename=%s' % book["name"].encode("Utf-8"))])
 
 urls = selector.Selector()
 urls.add('/', GET=home)
 urls.add('/books', GET=books)
 urls.add('/list', GET=list_peers)
 urls.add('/info/{id}', GET=info_on_a_book)
-urls.add('/get/{id}', GET=get_on_a_book)
+urls.add('/get/{id}', GET=get_on_a_book, HEAD=get_on_a_book)
 urls.add('/about', GET=about)
