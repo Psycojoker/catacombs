@@ -24,24 +24,24 @@ def render(start_response, text, headers=[('Content-Type', "text/html")]):
 
 @request
 def home(environ):
-    return dumps({"books": "/books", "peers": "/list", "about": "/about"})
+    return dumps({"books": "/books", "peers": "/list", "about": "/about"}, indent=4)
 
 @request
 def books(environ):
-    return dumps(db.get_books())
+    return dumps(db.get_books(), indent=4)
 
 @request
 def info_on_a_book(environ):
     id = environ['selector.vars']['id']
-    return dumps(db.get_a_book(id))
+    return dumps(db.get_a_book(id), indent=4)
 
 @request
 def about(environ):
-    return dumps({"owner": "%s@%s" % (os.environ["USER"], socket.gethostname())})
+    return dumps({"owner": "%s@%s" % (os.environ["USER"], socket.gethostname())}, indent=4)
 
 @request
 def list_peers(environ):
-    return dumps(db.get_peers())
+    return dumps(db.get_peers(), indent=4)
 
 def get_on_a_book(environ, start_response):
     id = environ['selector.vars']['id']
