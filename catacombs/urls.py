@@ -5,6 +5,7 @@ from json import dumps
 import db
 import os
 import socket
+from os.path import getsize
 
 extensions = {
     'html': 'text/html',
@@ -47,7 +48,10 @@ def get_on_a_book(environ, start_response):
     id = environ['selector.vars']['id']
     book = db.get_a_book(id, remove_path=False)
     content = open(book["path"], "r").read() if environ['REQUEST_METHOD'] == 'GET' else ""
-    return render(start_response, content, [('Content-Type', 'application/pdf'), ('Content-Disposition', 'attachment; filename=%s' % book["name"].encode("Utf-8"))])
+    return render(start_response, content, [('Content-Type', 'application/pdf'),
+                                            ('Content-Disposition', 'attachment; filename=%s' % book["name"].encode("Utf-8")),
+                                            ('Content-Length', str(int(getsize(book["path"])))),
+                                           ])
 
 urls = selector.Selector()
 urls.add('/', GET=home)
